@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="ImagingDicomCommon-0.2">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/pixelmed/ImagingDicomCommon/0.2/ImagingDicomCommon-0.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

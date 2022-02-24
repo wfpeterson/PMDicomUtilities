@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="dicomutilitiescommon-1.0.0">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/Imaging/dicomutilitiescommon/1.0.0/dicomutilitiescommon-1.0.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

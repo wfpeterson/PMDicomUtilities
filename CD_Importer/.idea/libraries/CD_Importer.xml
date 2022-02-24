@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="CD_Importer">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/dist/CD_Importer.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

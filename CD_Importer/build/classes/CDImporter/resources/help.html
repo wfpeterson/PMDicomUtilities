@@ -1,0 +1,25 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <div>Configure the system by opening Edit->DICOM configuration.</div>  
+        <div>Add at least one MWL SCP entries and one Store SCP entries.  This will allow you to perform modality wordlist queries and send images to a storage SCP.  The test button in the DICOM AE entry dialog allows you to send a DICOM Echo to the AE as configured in the dialog.
+
+            Multiple destinations can be defined an used.</div><div></div>
+
+        <div>To simulate a modality interaction first query the MWL SCP by entering search keys and issuing a query, pressing the Query button.  If you wish to enter new parameter, the clear button clears all the foods before entry. If you are satisfied without the demographic info, you can select a directory of .dcm files to send.  Once the directory is identified the send button allow you to initiate the transmission.</div><div></div>
+
+        <div>The application is single threaded,  You cannot interact with the GUI till the last request is complete.</div><div></div>
+
+        <div>The File->ImageInfo Menu allows you to inspect a DICOM file.
+
+File->Exit closes the application</div>
+    </body>
+</html>

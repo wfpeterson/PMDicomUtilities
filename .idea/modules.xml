@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/PMUtilities.iml" filepath="$PROJECT_DIR$/.idea/PMUtilities.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Algorithms/algorithms.iml" filepath="$PROJECT_DIR$/Algorithms/algorithms.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DicomUtilitiesCommon/dicomutilitiescommon.iml" filepath="$PROJECT_DIR$/DicomUtilitiesCommon/dicomutilitiescommon.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jai-imageio-core/jai-imageio-core.iml" filepath="$PROJECT_DIR$/jai-imageio-core/jai-imageio-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PMCDImporter/pmcdimporter.iml" filepath="$PROJECT_DIR$/PMCDImporter/pmcdimporter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PMDicomUtilities/pmdicomutilities.iml" filepath="$PROJECT_DIR$/PMDicomUtilities/pmdicomutilities.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PMValidation/pmvalidation.iml" filepath="$PROJECT_DIR$/PMValidation/pmvalidation.iml" />
+    </modules>
+  </component>
+</project>
