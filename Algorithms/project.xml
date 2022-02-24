@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <pomVersion>3</pomVersion>
+  <artifactId>algorithms</artifactId>
+  <name>Algorithms</name>
+  <groupId>algorithms</groupId>
+  <currentVersion>0.2</currentVersion>
+
+  <build>
+    <sourceDirectory>src/java</sourceDirectory>
+  </build>
+</project>
+
