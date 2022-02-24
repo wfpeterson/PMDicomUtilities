@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="gov/va/med/imaging/dicom/utils/pixelmed/reconstitution/" kind="src" path="src/java"/>
+	<classpathentry kind="src" path="test/java"/>
+	<classpathentry kind="src" path="resources/java"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/DicomUtilitiesCommon"/>
+	<classpathentry kind="var" path="M2_REPO/Imaging/ImagingDicomCommon/0.2/ImagingDicomCommon-0.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/pixelmed/pixelmed/18.04.19/pixelmed-18.04.19.jar" sourcepath="/WORKSPACE/PixelmedComplete_20180419"/>
+	<classpathentry kind="var" path="M2_REPO/pixelmed/pixelmed_imageio/1.0/pixelmed_imageio-1.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/pixelmed/pixelmed_codec/1.0/pixelmed_codec-1.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/algorithms/algorithms/0.3/algorithms-0.3.jar"/>
+	<classpathentry kind="var" path="M2_REPO/pixelmed/pmvalidation/2.1/pmvalidation-2.1.jar"/>
+	<classpathentry kind="var" path="M2_REPO/sun/treetable/1.0/treetable-1.0.jar" sourcepath="ECLIPSE_HOME/workspace/TreeTable"/>
+	<classpathentry kind="var" path="M2_REPO/org/apache/logging/log4j/log4j-api/2.9.0/log4j-api-2.9.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/apache/logging/log4j/log4j-core/2.9.0/log4j-core-2.9.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/slf4j/log4j-slf4j-impl/2.11.0/log4j-slf4j-impl-2.11.0.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="var" path="M2_REPO/com/jgoodies/forms/1.0.5/forms-1.0.5.jar"/>
+	<classpathentry kind="var" path="M2_REPO/aiviewer/aiviewer/0.0/aiviewer-0.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/excalibur/excalibur-bzip2/1.0/excalibur-bzip2-1.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/hsqldb/hsqldb/1.8.0/hsqldb-1.8.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/jmdns/jmdns/1.6.0_26/jmdns-1.6.0_26.jar"/>
+	<classpathentry kind="var" path="M2_REPO/jpedal/jpedalSTD/1.0/jpedalSTD-1.0.jar"/>
+	<classpathentry kind="var" path="M2_REPO/vecmath/vecmath/1.2/vecmath-1.2.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

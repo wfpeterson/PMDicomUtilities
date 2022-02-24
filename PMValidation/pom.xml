@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>pixelmed</groupId>
+  <artifactId>pmvalidation</artifactId>
+  <version>2.1</version>
+  <name>PMValidation</name>
+  <packaging>jar</packaging>
+  <build>
+    <finalName>${artifactId}-${version}</finalName>
+    <directory>${basedir}/target</directory>
+    <outputDirectory>${basedir}/target/classes</outputDirectory>
+    <testOutputDirectory>${basedir}/target/test-classes</testOutputDirectory>
+    <sourceDirectory>src/java</sourceDirectory>
+    <!--  <testSourceDirectory>test/java</testSourceDirectory>  -->
+    <resources>
+      <resource>
+        <directory>src/resources</directory>
+        <includes>
+          <include>**/*</include>
+        </includes>
+      </resource>
+    </resources>
+    <testResources>
+      <testResource>
+        <directory>test/resources</directory>
+        <includes>
+          <include>**/*</include>
+        </includes>
+      </testResource>
+    </testResources>
+    <plugins>
+      <plugin>
+        <groupId>UserPlugins</groupId>
+        <artifactId>maven-goal-plugin</artifactId>
+        <version>0.1</version>
+        <configuration>
+          <workingDirectory>${basedir}</workingDirectory>
+          <userGoalList>
+            <userGoalInfo>
+              <goalName>Imaging-dist</goalName>
+              <commands>
+                <command>
+                  <![CDATA[<attainGoal name="clean:clean" />]]>
+                </command>
+                <command>
+                  <![CDATA[<attainGoal name="jar:install" />]]>
+                </command>
+              </commands>
+            </userGoalInfo>
+            <userGoalInfo>
+              <goalName>default</goalName>
+              <commands>
+                <command>
+                  <![CDATA[<attainGoal name="clean:clean" />]]>
+                </command>
+                <command>
+                  <![CDATA[<attainGoal name="jar:install" />]]>
+                </command>
+              </commands>
+            </userGoalInfo>
+          </userGoalList>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <encoding>UTF-8</encoding>
+          <optimize>false</optimize>
+          <compilerArguments>
+            <source>${JAVA_VERSION}</source>
+            <target>${JAVA_VERSION}</target>
+          </compilerArguments>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <forkMode>once</forkMode>
+          <includes>          	 
+            <!-- <include>**/*Test*.java</include>   -->                        
+          </includes>
+          <excludes>
+            <!-- All abstract classes start with Abstract -->
+            <exclude>**/Abstract*.java</exclude>
+            <!-- Utility (helper) classes end with Utility -->
+            <exclude>**/*Utility.java</exclude>
+            <!-- Data generators end with Generator -->
+            <exclude>**/*Generator.java</exclude>
+            <!-- All Test Base classes end with TestBase -->
+            <exclude>**/*TestBase.java</exclude>
+            <!-- Data may be included in a static class ending with Data -->
+            <exclude>**/Mock*.java</exclude>
+            <!-- Inner classes are excluded as unit tests -->
+            <exclude>**/*$*</exclude>          
+            <!-- Excluding individual classes on a permanent basis is discouraged -->
+            <!-- Enter individual classes here -->
+            <exclude>**/*.java</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>pixelmed</groupId>
+      <artifactId>pixelmed</artifactId>
+      <version>18.04.19</version>
+      <scope>provided</scope>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.3</version>
+      <scope>provided</scope>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>jmdns</groupId>
+      <artifactId>jmdns</artifactId>
+      <version>1.0</version>
+      <scope>provided</scope>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>jpedal</groupId>
+      <artifactId>jpedalSTD</artifactId>
+      <version>1.0</version>
+      <scope>provided</scope>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>2.9.0</version>
+      <scope>provided</scope>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>2.9.0</version>
+      <scope>provided</scope>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.1</version>
+      <scope>provided</scope>
+      <type>jar</type>
+    </dependency>
+  </dependencies>
+  <properties>
+    <maven.build.dir>${basedir}/target</maven.build.dir>
+    <maven.final.name>${artifactId}-${version}</maven.final.name>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+</project>

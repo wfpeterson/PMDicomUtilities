@@ -1,0 +1,290 @@
+<project default="Imaging-dist" xmlns:m="jelly:maven" 
+	xmlns:ant="jelly:ant"
+  	xmlns:j="jelly:core"
+  	xmlns:license="license"
+  	xmlns:maven="jelly:maven"
+  	xmlns:artifact="artifact"
+  	xmlns:util="jelly:util">	
+
+
+
+    <goal name="Imaging-dist">
+		<attainGoal name="clean:clean"/>
+		<attainGoal name="java:compile"/>
+		<attainGoal name="custombuild-copy"/>
+		<attainGoal name="custombuild-validation"/>
+		<attainGoal name="custombuild-jar"/>
+		<attainGoal name="custombuild-install"/>
+		<attainGoal name="custombuild-IODTest"/>   
+	</goal>
+	 	
+    <goal name="custombuild-validation">
+    	<echo message="Running CompileXSLTIntoTranslet"/>
+    	<ant:java classname="com.pixelmed.validate.CompileXSLTIntoTranslet" fork="true">
+    		<ant:jvmarg value="-Djava.endorsed.dirs=${maven.repo.local}/pixelmed/jars"/>
+    		<ant:classpath>
+           		<pathelement location="./target/classes"/>
+           		<pathelement path="${maven.repo.local}">
+           			<fileset dir="/pixelmed/jars">
+        				<include name="*.jar"/>
+      				</fileset>
+      			</pathelement>
+           	</ant:classpath>
+    		<ant:arg value=".\target\classes\com\pixelmed\validate\CompileDicomIODDescriptionsIntoXSLT.xsl"/>
+    	</ant:java>
+
+    	<echo message="Running ExecuteTranslet"/>
+    	<ant:java classname="com.pixelmed.validate.ExecuteTranslet" fork="true">
+    		<ant:jvmarg value="-Djava.endorsed.dirs=${maven.repo.local}/pixelmed/jars"/>
+    		<ant:classpath>
+           		<pathelement location="./target/classes"/>
+           		<pathelement path="${maven.repo.local}">
+           			<fileset dir="/pixelmed/jars">
+        				<include name="*.jar"/>
+      				</fileset>
+      			</pathelement>
+         	</ant:classpath>
+    		<ant:arg value=".\target\classes\com\pixelmed\validate\CompileDicomIODDescriptionsIntoXSLT.xsl"/>
+    		<ant:arg value=".\src\java\com\pixelmed\validate\DicomIODDescriptionsSource.xml"/>
+    		<ant:arg value=".\target\classes\com\pixelmed\validate\DicomIODDescriptionsCompiled.xsl"/>
+    	</ant:java>    	
+   	</goal>
+   	
+   	<goal name="custombuild-copy">
+    	<ant:copy file="./src/java/com/pixelmed/validate/CompileDicomIODDescriptionsIntoXSLT.xsl"
+    		 todir="./target/classes/com/pixelmed/validate"/>
+    	<ant:copy file="./src/java/com/pixelmed/validate/CommonDicomIODValidationRules.xsl"
+    		 todir="./target/classes/com/pixelmed/validate"/>
+   	</goal>
+   	
+  <goal name="custombuild-jar" description="Create the deliverable jar file.">
+	<echo message="Create the deliverable jar file."/>
+    <j:choose>
+      <j:when test="${pom.currentVersion == null}">
+        <ant:fail>You must define currentVersion in your POM.</ant:fail>
+      </j:when>
+    </j:choose>
+    
+    <ant:available property="maven.jar.manifest.available" 
+      file="${maven.jar.manifest}"/>
+
+    <j:set var="specificationTitle" value="${pom.shortDescription.trim()}"/>
+    <j:if test="${specificationTitle.length() gt 49}">
+      <ant:echo>Warning: shortDescription is greater than 49 characters - trimming for specification title.</ant:echo>
+      <j:set var="specificationTitle" value="${specificationTitle.substring(0,46)}..."/>
+    </j:if>
+
+    <!-- See http://java.sun.com/j2se/1.3/docs/guide/jar/jar.html -->
+    <!-- See http://java.sun.com/j2se/1.4.1/docs/guide/jar/jar.html -->
+    <ant:jar
+      jarfile="${maven.build.dir}/${maven.final.name}.jar"
+      basedir="${maven.build.dest}"
+      index="${maven.jar.index}"
+      compress="${maven.jar.compress}"
+      excludes="${maven.jar.excludes}"> 
+      
+      <j:if test="${maven.jar.manifest.available}">
+        <ant:setProperty name="manifest" value="${maven.jar.manifest}" />
+      </j:if>
+
+      <j:if test="${context.getVariable('maven.jar.includes') != null}">
+        <ant:setProperty name="includes" value="${maven.jar.includes}" />
+      </j:if>
+
+      <j:set var="licenseFileName"><license:fileName/></j:set>
+      <util:file name="${licenseFileName}" var="licenseFile"/>
+      <ant:metainf dir="${licenseFile.canonicalFile.parent}">
+        <ant:include name="${licenseFile.canonicalFile.name}"/>
+      </ant:metainf>
+      <ant:manifest>
+        <ant:attribute name="Built-By" value="${user.name}"/>
+        <ant:attribute name="Created-By" value="Apache Maven"/>
+        <ant:attribute name="Package" value="${pom.package}"/>
+        <ant:attribute name="Build-Jdk" value="${java.version}"/>
+
+        <j:set var="jarClasspath" value="${maven.jar.manifest.classpath.add}"/>
+        <j:if test="${jarClasspath}">
+            <j:forEach var="dep" items="${pom.dependencies}">
+                <j:if test="${dep.getProperty('jar.manifest.classpath')=='true'}">
+                    <j:set var="maven.jar.classpath" value="${maven.jar.classpath} ${dep.artifact}" /> 
+                </j:if>
+            </j:forEach>
+            <j:if test="${maven.jar.classpath.length() != 0}">
+                <ant:attribute name="Class-Path" value="${maven.jar.classpath}"/>
+            </j:if>
+        </j:if>
+        <!-- added supplementary entries -->
+        <ant:attribute name="Extension-Name" value="${pom.artifactId}"/>
+        <ant:attribute name="Specification-Title" value="${specificationTitle}" />
+        <ant:attribute name="Specification-Vendor" value="${pom.organization.name}"/>
+        <!--
+        <ant:attribute name="Specification-Version" value="${pom.currentVersion}"/>
+        -->
+        <ant:attribute name="Implementation-Title" value="${pom.package}"/>
+        <ant:attribute name="Implementation-Vendor" value="${pom.organization.name}"/>
+        <ant:attribute name="Implementation-Version" value="${pom.currentVersion}"/>
+        <j:set var="mainclass" value="${maven.jar.mainclass}" />
+        <j:if test="${!empty(mainclass)}">
+            <ant:attribute name="Main-Class" value="${mainclass}"/>
+        </j:if>
+        
+        <j:set var="jarExtensions" value="${maven.jar.manifest.extensions.add}"/>
+        <j:if test="${jarExtensions == 'true'}">
+          <j:set var="extensionList" value=""/>
+          <j:forEach var="artifact" items="${pom.artifacts}">
+            <j:set var="dep" value="${artifact.dependency}"/>
+            <j:if test="${dep.type == 'jar' || empty(dep.type)}">
+              <j:set var="extensionList" value="${extensionList} ${dep.artifactId}"/>
+            </j:if>
+          </j:forEach>
+
+		  <j:if test="${extensionList.length() != 0}">        
+            <j:set var="extensionList" value="${extensionList.substring(1)}"/>
+            <ant:attribute name="Extension-List" value="${extensionList}"/>
+          </j:if>
+
+          <j:forEach var="artifact" items="${pom.artifacts}">
+            <j:set var="dep" value="${artifact.dependency}"/>
+            <j:if test="${dep.type == 'jar' || empty(dep.type)}">
+              <ant:attribute name="${dep.artifactId}-Extension-Name" value="${dep.artifactId}"/>
+              <ant:attribute name="${dep.artifactId}-Implementation-Version" value="${dep.version}"/>
+              
+              <j:choose>
+                <j:when test="${empty(dep.url) || dep.url.toString().trim().length() == 0}">
+                  <ant:attribute name="${dep.artifactId}-Implementation-URL" value="http://www.ibiblio.org/maven${artifact.urlPath}"/>
+                </j:when>
+                <j:otherwise>
+                  <ant:attribute name="${dep.artifactId}-Implementation-URL" value="${dep.url}"/>
+                </j:otherwise>
+              </j:choose>
+            </j:if>
+          </j:forEach>        
+        </j:if>
+
+        <j:if test="${context.getVariable('maven.jar.manifest.attributes.list') != null}">
+            <util:tokenize var="attributeList" delim="," trim="true">${maven.jar.manifest.attributes.list}</util:tokenize>
+            <j:forEach var="attribute" items="${attributeList}">
+                <j:set var="name" value="maven.jar.manifest.attribute.${attribute}"/>
+                <j:set var="value" value="${context.findVariable(name)}"/>
+                <ant:attribute name="${attribute}" value="${value}"/>
+            </j:forEach>
+        </j:if>
+
+        <j:if test="${context.getVariable('maven.jar.manifest.groups.list') != null}">
+            <util:tokenize var="groupList" delim="," trim="true">${maven.jar.manifest.groups.list}</util:tokenize>
+            <j:forEach var="group" items="${groupList}">
+                <j:set var="nameVar" value="maven.jar.manifest.${group}.name"/>
+                <j:set var="groupName" value="${context.findVariable(nameVar)}"/>
+                <j:set var="attributeListVar" value="maven.jar.manifest.${group}.attributes.list"/>
+                <j:set var="groupAttributes" value="${context.findVariable(attributeListVar)}"/>
+                <util:tokenize var="attributeList" delim="," trim="true">${groupAttributes}</util:tokenize>
+                <ant:section name="${groupName}">
+                    <j:forEach var="attribute" items="${attributeList}">
+                        <j:set var="name" value="maven.jar.manifest.${group}.attribute.${attribute}"/>
+                        <j:set var="value" value="${context.findVariable(name)}"/>
+                        <ant:attribute name="${attribute}" value="${value}"/>
+                    </j:forEach>
+                </ant:section>
+            </j:forEach>
+         </j:if>
+      </ant:manifest>
+    </ant:jar>
+  </goal>
+  
+  <goal name="custombuild-install" description="Install the jar in the local repository">
+  	<echo message="Install the jar in the local repository"/>
+    <artifact:install
+      artifact="${maven.build.dir}/${maven.final.name}.jar"
+      type="jar"
+      project="${pom}"/>
+  </goal>
+  
+  <goal name="custombuild-IODTest" description="Run IOD Validation Tests.">
+  
+  		<echo message=""/>
+  		<echo message="IOD Validation of CT Image..."/>
+    	<ant:java classname="com.pixelmed.validate.DicomInstanceValidator" fork="true">
+    		<ant:jvmarg value="-Djava.endorsed.dirs=${maven.repo.local}/pixelmed/jars"/>
+    		<ant:classpath>
+           		<pathelement location="./target/classes"/>
+           		<pathelement path="${maven.repo.local}">
+           			<fileset dir="/pixelmed/jars">
+        				<include name="*.jar"/>
+      				</fileset>
+      			</pathelement>
+           	</ant:classpath>
+    		<ant:arg value="./B1052853.dcm"/>
+    	</ant:java>
+  		<echo message=""/>
+    	<echo message="IOD Validation of SC Image..."/>
+    	<ant:java classname="com.pixelmed.validate.DicomInstanceValidator" fork="true">
+    		<ant:jvmarg value="-Djava.endorsed.dirs=${maven.repo.local}/pixelmed/jars"/>
+    		<ant:classpath>
+           		<pathelement location="./target/classes"/>
+           		<pathelement path="${maven.repo.local}">
+           			<fileset dir="/pixelmed/jars">
+        				<include name="*.jar"/>
+      				</fileset>
+      			</pathelement>
+           	</ant:classpath>
+    		<ant:arg value="./A0000218.dcm"/>
+    	</ant:java>
+  		<echo message=""/>
+    	<echo message="IOD Validation of Multiframe US Image..."/>
+    	<ant:java classname="com.pixelmed.validate.DicomInstanceValidator" fork="true">
+    		<ant:jvmarg value="-Djava.endorsed.dirs=${maven.repo.local}/pixelmed/jars"/>
+    		<ant:classpath>
+           		<pathelement location="./target/classes"/>
+           		<pathelement path="${maven.repo.local}">
+           			<fileset dir="/pixelmed/jars">
+        				<include name="*.jar"/>
+      				</fileset>
+      			</pathelement>
+           	</ant:classpath>
+    		<ant:arg value="./V0001451.dcm"/>
+    	</ant:java>
+  		<echo message=""/>
+    	<echo message="IOD Validation of US Image..."/>
+    	<ant:java classname="com.pixelmed.validate.DicomInstanceValidator" fork="true">
+    		<ant:jvmarg value="-Djava.endorsed.dirs=${maven.repo.local}/pixelmed/jars"/>
+    		<ant:classpath>
+           		<pathelement location="./target/classes"/>
+           		<pathelement path="${maven.repo.local}">
+           			<fileset dir="/pixelmed/jars">
+        				<include name="*.jar"/>
+      				</fileset>
+      			</pathelement>
+           	</ant:classpath>
+    		<ant:arg value="./V0002185.dcm"/>
+    	</ant:java>
+  		<echo message=""/>
+    	<echo message="IOD Validation of CR Image..."/>
+    	<ant:java classname="com.pixelmed.validate.DicomInstanceValidator" fork="true">
+    		<ant:jvmarg value="-Djava.endorsed.dirs=${maven.repo.local}/pixelmed/jars"/>
+    		<ant:classpath>
+           		<pathelement location="./target/classes"/>
+           		<pathelement path="${maven.repo.local}">
+           			<fileset dir="/pixelmed/jars">
+        				<include name="*.jar"/>
+      				</fileset>
+      			</pathelement>
+           	</ant:classpath>
+    		<ant:arg value="./A0002311.dcm"/>
+    	</ant:java>
+  		<echo message=""/>
+    	<echo message="IOD Validation of VL Endoscopic Image..."/>
+    	<ant:java classname="com.pixelmed.validate.DicomInstanceValidator" fork="true">
+    		<ant:jvmarg value="-Djava.endorsed.dirs=${maven.repo.local}/pixelmed/jars"/>
+    		<ant:classpath>
+           		<pathelement location="./target/classes"/>
+           		<pathelement path="${maven.repo.local}">
+           			<fileset dir="/pixelmed/jars">
+        				<include name="*.jar"/>
+      				</fileset>
+      			</pathelement>
+           	</ant:classpath>
+    		<ant:arg value="./A0000218.dcm"/>
+    	</ant:java>
+  </goal>
+  
+</project>

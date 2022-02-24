@@ -1,0 +1,12 @@
+<project default="Imaging-dist" xmlns:m="jelly:maven">	
+
+	
+	<preGoal name="jar:jar">
+   	</preGoal>
+
+    <goal name="Imaging-dist">
+    	<attainGoal name="clean:clean" />
+    	<attainGoal name="jar:install" />
+    </goal>
+    
+</project>

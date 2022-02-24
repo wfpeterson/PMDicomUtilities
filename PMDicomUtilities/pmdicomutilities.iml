@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
+    <output url="file://$MODULE_DIR$/target/classes" />
+    <output-test url="file://$MODULE_DIR$/target/test-classes" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/test/java" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="algorithms" />
+    <orderEntry type="module" module-name="dicomutilitiescommon" />
+    <orderEntry type="module" module-name="pmvalidation" />
+    <orderEntry type="module" module-name="jai-imageio-core" />
+    <orderEntry type="library" scope="PROVIDED" name="pixelmed-21.09.20" level="project" />
+    <orderEntry type="library" name="ImagingDicomCommon-0.2" level="project" />
+    <orderEntry type="library" name="dicomutilitiescommon-1.0.0" level="project" />
+    <orderEntry type="library" name="log4j-api-2.17.1" level="project" />
+  </component>
+</module>

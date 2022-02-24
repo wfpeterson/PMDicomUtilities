@@ -1,0 +1,8 @@
+Found USImage IOD
+Error: USImageModule/PlanarConfiguration/: PlanarConfiguration: Conditional attribute present when condition not satisfied
+Warning: USImageModule/ImageType/: ImageType/value[3]: Unrecognized defined term ::
+IOD validation complete
+
+SamplesPerPixel 3
+PlanarConfiguration 0
+ImageType ORIGINAL/PRIMARY
